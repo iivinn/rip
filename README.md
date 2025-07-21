@@ -1,4 +1,4 @@
-Flow.Launcher.Plugin.Rip
+rip⚡
 ==================
 
 A plugin for the [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
