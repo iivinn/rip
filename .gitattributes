@@ -62,4 +62,4 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-.ps1 linguist-vendored
+*.ps1 linguist-vendored
