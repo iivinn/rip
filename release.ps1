@@ -1,0 +1,2 @@
+dotnet publish Flow.Launcher.Plugin.Rip -c Release -r win-x64 --no-self-contained
+Compress-Archive -LiteralPath Flow.Launcher.Plugin.Rip/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.Rip/bin/Rip.zip -Force

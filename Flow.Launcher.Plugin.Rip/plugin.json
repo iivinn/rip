@@ -1,0 +1,12 @@
+{
+    "ID": "2F2C2193E9A54437AA69B846121976D8",
+    "ActionKeyword": "rip",
+    "Name": "rip",
+    "Description": "a plugin for downloading youtube videos",
+    "Author": "iivinn",
+    "Version": "1.0.0",
+    "Language": "csharp",
+    "Website": "https://github.com/iivinn/rip",
+    "IcoPath": "",
+    "ExecuteFileName": "Flow.Launcher.Plugin.Rip.dll"
+}
