@@ -111,23 +111,25 @@ namespace Flow.Launcher.Plugin.Rip
                             _hasUserInput = false;
                             return true;
                         },
-                        IcoPath = videoDataResult.Data.Thumbnail
+                        IcoPath = videoDataResult.Data.Thumbnail,
+                        Score = 0,
                     };
-
+                    
                     var audioOptionResult = new Result
                     {
                         Title = videoDataResult.Data.Title,
-                        SubTitle = "🎵 Download audio",
+                        SubTitle = "🔊 Download audio",
                         Action = _ =>
                         {
                             HandleAudioDownloadAsync(url).ConfigureAwait(false);
-                            _context.API.ShowMsg("📁 Download started...", $"🎵 {videoDataResult.Data.Title}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
+                            _context.API.ShowMsg("📁 Download started...", $"🔊 {videoDataResult.Data.Title}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
 
                             // Reset to initResult after handling the input
                             _hasUserInput = false;
                             return true;
                         },
-                        IcoPath = videoDataResult.Data.Thumbnail
+                        IcoPath = videoDataResult.Data.Thumbnail,
+                        Score = 1,
                     };
 
                     return new List<Result>() { videoOptionResult, audioOptionResult };
