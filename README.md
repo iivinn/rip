@@ -1,8 +1,4 @@
 rip 💿
 ==================
 
-A plugin for the [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
-
-### Usage
-
-    rip <arguments>
+A simple [Flow Launcher](https://github.com/Flow-Launcher/Flow.Launcher) plugin for ripping YouTube videos.
