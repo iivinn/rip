@@ -17,7 +17,16 @@ namespace Flow.Launcher.Plugin.Rip
     {
         private PluginInitContext _context;
         private YoutubeDL _ytdl;
+        
         private bool _hasUserInput = false; // Flag to track if user input has been provided
+
+        // Get the user data plugins folder
+        private string _pluginFolder = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), // AppData\Roaming
+            "FlowLauncher",
+            "Plugins",
+            "rip"
+        );
 
         /// <summary>
         /// Initializes the plugin asynchronously.
@@ -28,14 +37,6 @@ namespace Flow.Launcher.Plugin.Rip
             _context = context;
             _ytdl = new YoutubeDL();
 
-            // Get the user data plugins folder
-            string pluginFolder = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), // AppData\Roaming
-                "FlowLauncher",
-                "Plugins",
-                "rip"
-            );
-
             // Set the output folder to the user's Downloads directory
             string downloadsFolder = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -44,10 +45,10 @@ namespace Flow.Launcher.Plugin.Rip
             _ytdl.OutputFolder = downloadsFolder;
 
             // Check and download yt-dlp if not found
-            string ytDlpPath = System.IO.Path.Combine(pluginFolder, "yt-dlp.exe");
+            string ytDlpPath = System.IO.Path.Combine(_pluginFolder, "yt-dlp.exe");
             if (!System.IO.File.Exists(ytDlpPath))
             {
-                await YoutubeDLSharp.Utils.DownloadYtDlp(pluginFolder);
+                await YoutubeDLSharp.Utils.DownloadYtDlp(_pluginFolder);
             }
             _ytdl.YoutubeDLPath = ytDlpPath;
 
@@ -56,7 +57,7 @@ namespace Flow.Launcher.Plugin.Rip
             string ffmpegPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg.exe");
             if (!System.IO.File.Exists(ffmpegPath))
             {
-                await YoutubeDLSharp.Utils.DownloadFFmpeg(pluginFolder);
+                await YoutubeDLSharp.Utils.DownloadFFmpeg(_pluginFolder);
             }
             _ytdl.FFmpegPath = ffmpegPath;
         }
@@ -74,9 +75,9 @@ namespace Flow.Launcher.Plugin.Rip
             {
                 var initResult = new Result
                 {
-                    Title = "▶️ Paste YouTube URL",
-                    SubTitle = _ytdl.OutputFolder.ToString(),
-                    IcoPath = "assets/icon.png",
+                    Title = "🌐 Paste YouTube URL",
+                    SubTitle = $"📁 Output folder: {_ytdl.OutputFolder}",
+                    IcoPath = System.IO.Path.Combine(_pluginFolder, "assets/icon.png"),
                 };
 
                 // If the user hasn't entered anything, return only the initResult
@@ -91,7 +92,7 @@ namespace Flow.Launcher.Plugin.Rip
 
             if (IsValidUrl(query.Search))
             {
-                var url = $"{query.Search}";
+                var url = $"{query.Search.Trim()}";
 
                 var videoDataResult = await _ytdl.RunVideoDataFetch(url);
                 if (videoDataResult.Success)
@@ -99,11 +100,11 @@ namespace Flow.Launcher.Plugin.Rip
                     var videoOptionResult = new Result
                     {
                         Title = videoDataResult.Data.Title,
-                        SubTitle = "🎥 Download Video",
+                        SubTitle = "🎥 Download video",
                         Action = _ =>
                         {
                             HandleVideoDownloadAsync(url).ConfigureAwait(false);
-                            _context.API.ShowMsg("🎥 Download started...", $"{videoDataResult.Data.Title}", "assets/icon.png");
+                            _context.API.ShowMsg("📁 Download started...", $"🎥 {videoDataResult.Data.Title}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
 
                             // Reset to initResult after handling the input
                             _hasUserInput = false;
@@ -115,11 +116,11 @@ namespace Flow.Launcher.Plugin.Rip
                     var audioOptionResult = new Result
                     {
                         Title = videoDataResult.Data.Title,
-                        SubTitle = "🎵 Download Audio",
+                        SubTitle = "🎵 Download audio",
                         Action = _ =>
                         {
                             HandleAudioDownloadAsync(url).ConfigureAwait(false);
-                            _context.API.ShowMsg("🎵 Download started...", $"{videoDataResult.Data.Title}", "assets/icon.png");
+                            _context.API.ShowMsg("📁 Download started...", $"🎵 {videoDataResult.Data.Title}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
 
                             // Reset to initResult after handling the input
                             _hasUserInput = false;
@@ -136,7 +137,7 @@ namespace Flow.Launcher.Plugin.Rip
                     {
                         Title = "❌ Error fetching video data :(",
                         SubTitle = String.Join("\n", videoDataResult.ErrorOutput),
-                        IcoPath = "assets/icon.png",
+                        IcoPath = System.IO.Path.Combine(_pluginFolder, "assets/icon.png"),
                     };
 
                     // Reset to initResult after an error
@@ -150,7 +151,7 @@ namespace Flow.Launcher.Plugin.Rip
             {
                 Title = "❌ Invalid URL",
                 SubTitle = "Please enter a valid YouTube URL",
-                IcoPath = "assets/icon.png",
+                IcoPath = System.IO.Path.Combine(_pluginFolder, "assets/icon.png"),
             };
 
             // Reset to initResult after invalid input
@@ -166,20 +167,50 @@ namespace Flow.Launcher.Plugin.Rip
 
         private async Task HandleVideoDownloadAsync(string url)
         {
-            var videoOptions = new OptionSet
+            try
             {
-                Format = "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/mp4",
-                MergeOutputFormat = DownloadMergeFormat.Mp4
-            };
+                var videoOptions = new OptionSet
+                {
+                    Format = "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/mp4",
+                    MergeOutputFormat = DownloadMergeFormat.Mp4
+                };
 
-            var videoDownloadResult = await _ytdl.RunVideoDownload(url, overrideOptions: videoOptions);
-            _context.API.ShowMsg("Download complete!", $"{videoDownloadResult.Data}", "assets/icon.png");
+                var videoDownloadResult = await _ytdl.RunVideoDownload(url, overrideOptions: videoOptions);
+
+                if (videoDownloadResult.Success)
+                {
+                    _context.API.ShowMsg("✅ Download complete!", $"{videoDownloadResult.Data}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
+                }
+                else
+                {
+                    _context.API.ShowMsg("❌ Download failed", string.Join("\n", videoDownloadResult.ErrorOutput) ?? "Unknown error occurred.", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
+                }
+            }
+            catch (Exception ex)
+            {
+                _context.API.ShowMsgError("❌ Error", $"{ex.Message}");
+            }
         }
 
         private async Task HandleAudioDownloadAsync(string url)
         {
-            var audioDownloadResult = await _ytdl.RunAudioDownload(url, AudioConversionFormat.Mp3);
-            _context.API.ShowMsg("Download complete!", $"{audioDownloadResult.Data}", "assets/icon.png");
+            try
+            {
+                var audioDownloadResult = await _ytdl.RunAudioDownload(url, AudioConversionFormat.Mp3);
+
+                if (audioDownloadResult.Success)
+                {
+                    _context.API.ShowMsg("✅ Download complete!", $"{audioDownloadResult.Data}", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
+                }
+                else
+                {
+                    _context.API.ShowMsg("❌ Download failed", string.Join("\n", audioDownloadResult.ErrorOutput) ?? "Unknown error occurred.", System.IO.Path.Combine(_pluginFolder, "assets/icon.png"));
+                }
+            }
+            catch (Exception ex)
+            {
+                _context.API.ShowMsgError("❌ Error", $"{ex.Message}");
+            }
         }
     }
 }
