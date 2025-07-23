@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Flow.Launcher.Plugin;
 using YoutubeDLSharp;
 using YoutubeDLSharp.Metadata;
@@ -13,7 +14,7 @@ namespace Flow.Launcher.Plugin.Rip
     /// <summary>
     /// Represents the main plugin class for the Flow Launcher Rip plugin.
     /// </summary>
-    public class Rip : IAsyncPlugin
+    public class Rip : IAsyncPlugin, ISettingProvider
     {
         private PluginInitContext _context;
         private YoutubeDL _ytdl;
@@ -196,7 +197,13 @@ namespace Flow.Launcher.Plugin.Rip
         {
             try
             {
-                var audioDownloadResult = await _ytdl.RunAudioDownload(url, AudioConversionFormat.Mp3);
+                var audioOptions = new OptionSet
+                {
+                    AudioFormat = AudioConversionFormat.Mp3,
+                    AudioQuality = "320K"
+                }
+
+                var audioDownloadResult = await _ytdl.RunAudioDownload(url, overrideOptions: audioOptions);
 
                 if (audioDownloadResult.Success)
                 {
