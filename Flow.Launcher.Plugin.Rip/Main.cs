@@ -14,7 +14,7 @@ namespace Flow.Launcher.Plugin.Rip
     /// <summary>
     /// Represents the main plugin class for the Flow Launcher Rip plugin.
     /// </summary>
-    public class Rip : IAsyncPlugin, ISettingProvider
+    public class Rip : IAsyncPlugin
     {
         private PluginInitContext _context;
         private YoutubeDL _ytdl;
@@ -197,13 +197,7 @@ namespace Flow.Launcher.Plugin.Rip
         {
             try
             {
-                var audioOptions = new OptionSet
-                {
-                    AudioFormat = AudioConversionFormat.Mp3,
-                    AudioQuality = "320K"
-                }
-
-                var audioDownloadResult = await _ytdl.RunAudioDownload(url, overrideOptions: audioOptions);
+                var audioDownloadResult = await _ytdl.RunAudioDownload(url, AudioConversionFormat.Mp3);
 
                 if (audioDownloadResult.Success)
                 {
