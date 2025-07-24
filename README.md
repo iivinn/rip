@@ -23,7 +23,8 @@ rip 💿
 - - [ ] Ability to select default/preferred file formats and output settings
 
 ## ⬇️ Installation
-- [Flow Launcher Plugin Store](https://github.com/Flow-Launcher/Flow.Launcher/?tab=readme-ov-file#-plugin-store)
+- [You can view the full plugin list or quickly install a plugin via the Plugin Store menu inside Settings](https://github.com/Flow-Launcher/Flow.Launcher/?tab=readme-ov-file#-plugin-store)
+- or type `pm install rip` in the search window
 
 ## 👨‍💻 Usage
 - Use the keyword command `rip`
