@@ -1,0 +1,55 @@
+name: Publish Release
+
+permissions:
+    contents: write
+
+on:
+    push:
+        branches: [ main ]
+        paths:
+            - "Flow.Launcher.Plugin.Rip/plugin.json"
+    workflow_dispatch:
+  
+jobs:
+    publish:
+        runs-on: windows-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v3
+              with:
+                dotnet-version: '7.0.x'
+
+            - name: get version
+              id: version
+              uses: notiz-dev/github-action-json-property@release
+              with:
+                file: Flow.Launcher.Plugin.Rip/plugin.json
+                prop_path: "Version"
+                
+            - run: echo ${{steps.version.outputs.prop}}
+  
+            - name: Extract release notes
+              id: extract-release-notes
+              uses: ffurrer2/extract-release-notes@v2
+
+            - name: Restore dependencies
+              run: | 
+                  cd Flow.Launcher.Plugin.Rip
+                  dotnet restore
+
+            - name: Build
+              run: |
+                  cd Flow.Launcher.Plugin.Rip
+                  dotnet publish Flow.Launcher.Plugin.Rip -c Release -r win-x64 --no-self-contained
+                  Compress-Archive -LiteralPath Flow.Launcher.Plugin.Rip/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.Rip/bin/Flow.Launcher.Plugin.Rip.zip -Force
+
+            - name: Publish
+              uses: softprops/action-gh-release@v1
+              with:
+                body: ${{ steps.version.outputs.prop }}
+                files: "Flow.Launcher.Plugin.Rip/bin/Flow.Launcher.Plugin.Rip.zip"
+                tag_name: "v${{ steps.version.outputs.prop }}"
+                
