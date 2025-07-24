@@ -1,7 +1,5 @@
-rip 
+rip 💿
 ==================
-
-![](https://github.com/user-attachments/assets/5b15e5b0-d158-4a7a-a669-86bcef6ecb75)
 
 ## A [Flow Launcher](https://github.com/Flow-Launcher/Flow.Launcher) plugin for ripping videos like CDs — powered by [yt-dlp](https://github.com/yt-dlp/yt-dlp) ⚡
 
