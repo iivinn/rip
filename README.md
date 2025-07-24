@@ -20,9 +20,16 @@ rip 💿
 - - [ ] Support multiple file formats
 - - [ ] Support multiple websites
 - - [ ] Set custom output folder
+- - [ ] Ability to select default/preferred file formats and output settings
 
 ## ⬇️ Installation
 - [Flow Launcher Plugin Store](https://github.com/Flow-Launcher/Flow.Launcher/?tab=readme-ov-file#-plugin-store)
+
+## 👨‍💻 Usage
+- Use the keyword command `rip`
+- Paste a video URL (currently only supports YouTube links)
+- Select either video or audio download
+- File will be sent to your output folder (`%USERPROFILE/Downloads` by default)
 
 ## 🙌 Contribution
 - Contributions are welcome! Whether it’s a bug fix, feature suggestion, or new functionality, feel free to open an issue or submit a pull request.
