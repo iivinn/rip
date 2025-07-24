@@ -7,7 +7,7 @@ rip
 
 ![showcase](https://github.com/user-attachments/assets/5162c892-b5c2-4603-b335-265f6b6e8ce8)
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/iivinn/rip/total)
+![GitHub Release](https://img.shields.io/github/v/release/iivinn/rip) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/iivinn/rip/total)
 
 ## ⭐ Features
 - - [x] Extract audio (mp3) and video (mp4) from YouTube video links
