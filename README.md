@@ -27,5 +27,5 @@ rip 💿
 ## 🙌 Contribution
 - Contributions are welcome! Whether it’s a bug fix, feature suggestion, or new functionality, feel free to open an issue or submit a pull request.
 
-## ⚠️ Disclaimer
+## ⚠  Disclaimer
 - This project utilizes yt-dlp to extract publicly available media, and it is the responsibility of the user to ensure they comply with all applicable laws and the terms of service of any website they access. I do not encourage piracy, copyright infringement, or the unauthorized distribution of content.
