@@ -5,6 +5,12 @@ rip 💿
 
 ![showcase](https://github.com/user-attachments/assets/5162c892-b5c2-4603-b335-265f6b6e8ce8)
 
+
+> [!WARNING]
+> This is a work-in-progress and not the finished product.
+> 
+> It is also my first C# project, so please feel free to [report any bugs](https://github.com/iivinn/rip/issues)!
+
 <a href='https://ko-fi.com/O5O71IJ23T' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ![GitHub Release](https://img.shields.io/github/v/release/iivinn/rip) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/iivinn/rip/total)
