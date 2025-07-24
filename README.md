@@ -7,9 +7,9 @@ rip 💿
 
 
 > [!WARNING]
-> This is a work-in-progress and not the finished product.
+> This project is a work-in-progress and may contain bugs or undesired behavior.
 > 
-> It is also my first C# project, so please feel free to [report any bugs](https://github.com/iivinn/rip/issues)!
+> It's also my first time using C#, so if you encounter any bugs, consider opening an [issue](https://github.com/iivinn/rip/issues)!
 
 <a href='https://ko-fi.com/O5O71IJ23T' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
