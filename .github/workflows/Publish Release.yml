@@ -5,9 +5,11 @@ permissions:
 
 on:
     push:
-        branches: [ main ]
-        paths:
-            - "Flow.Launcher.Plugin.Rip/plugin.json"
+      branches: [ main ]
+      paths:
+        - "Flow.Launcher.Plugin.Rip/plugin.json"
+      tags:
+        - "v*"
     workflow_dispatch:
   
 jobs:
@@ -15,6 +17,7 @@ jobs:
         runs-on: windows-latest
 
         steps:
+            - name: Checkout code
             - uses: actions/checkout@v3
             
             - name: Setup .NET
@@ -26,25 +29,22 @@ jobs:
               id: version
               uses: notiz-dev/github-action-json-property@release
               with:
-                path: Flow.Launcher.Plugin.Rip/plugin.json
+                path: "Flow.Launcher.Plugin.Rip/plugin.json"
                 prop_path: "Version"
                 
             - run: echo ${{steps.version.outputs.prop}}
 
             - name: Restore dependencies
-              run: | 
-                  cd Flow.Launcher.Plugin.Rip
-                  dotnet restore
+              run: dotnet restore
 
             - name: Build
-              run: |
-                  cd Flow.Launcher.Plugin.Rip
-                  dotnet publish Flow.Launcher.Plugin.Rip -c Release -r win-x64 --no-self-contained
-                  Compress-Archive -LiteralPath Flow.Launcher.Plugin.Rip/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.Rip/bin/Flow.Launcher.Plugin.Rip.zip -Force
+              run: ./release.ps1
 
             - name: Publish
               uses: softprops/action-gh-release@v1
+              if: success()
               with:
+                name: rip v${{ steps.version.outputs.prop }}
                 body: ${{ steps.version.outputs.prop }}
                 files: "Flow.Launcher.Plugin.Rip/bin/Flow.Launcher.Plugin.Rip.zip"
                 tag_name: "v${{ steps.version.outputs.prop }}"
