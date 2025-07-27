@@ -30,10 +30,6 @@ jobs:
                 prop_path: "Version"
                 
             - run: echo ${{steps.version.outputs.prop}}
-  
-            - name: Extract release notes
-              id: extract-release-notes
-              uses: ffurrer2/extract-release-notes@v2
 
             - name: Restore dependencies
               run: | 
