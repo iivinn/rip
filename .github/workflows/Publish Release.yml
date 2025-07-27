@@ -38,6 +38,7 @@ jobs:
               run: dotnet restore
 
             - name: Build
+              shell: pwsh
               run: ./release.ps1
 
             - name: Publish
